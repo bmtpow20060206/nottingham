@@ -1,0 +1,9 @@
+CHIP MyOr{
+IN a,b;
+OUT out;
+
+PARTS:
+// Put your implementation here.
+
+}
+
