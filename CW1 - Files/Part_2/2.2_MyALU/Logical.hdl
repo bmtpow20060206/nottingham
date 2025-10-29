@@ -1,0 +1,22 @@
+CHIP Logical{
+	IN x[16], y[16], c1, c0;
+	OUT out[16];
+
+PARTS:
+	Not16(in = x, out = nx);
+	Not16(in = y, out = ny);
+
+	Or16(a = x, b = y, out = xoy);
+	And16(a = x, b = y, out = xny);
+	
+	And16(a = y, b = nx, out = nxny); //nxnny is not x and not y
+	And16(a = ny, b = x, out = xnny);
+	Or16(a = nxny, b = xnny, out = xxory);
+
+	Not16(in = xxory, out = xnxory);
+
+	Mux16(a = xny, b = xoy, sel = c0, out = notxor);
+	Mux16(a = xxory, b = xnxory, sel = c0, out = xor);
+
+	Mux16(a = notxor, b = xor, sel = c1, out = out);
+}

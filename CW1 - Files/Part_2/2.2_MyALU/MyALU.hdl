@@ -20,7 +20,7 @@ CHIP MyALU {
         C1, // Control Bit 1
         C2, // Control Bit 2
         C3,  // Control Bit 3
-	C4,  // Control Bit 4 (Most significant - 5th Control bit)
+	C4;  // Control Bit 4 (Most significant - 5th Control bit)
         
 
     OUT 
@@ -30,4 +30,14 @@ CHIP MyALU {
 
     PARTS:
    // Put you code here:
+	Arithmetic(x=x,y=y,c0=C0,c1=C1,c2=C2,c3=C3, out = arithmeticOut);
+	Logical(x=x,y=y,c0=C0,c1=C1, out = logicalOut);
+
+	Mux16(a = arithmeticOut, b = logicalOut, sel = C4, out = temp); //temp bcuz we need to check for status bit stuff
+
+	//out = out lol
+	And16(a = temp, b = true, out = out);
+
+	statusBits(temp = temp, ng = ng, zg = zg); //The input name is temp because im lwk too lazy to change it back since i originally wrote it in here
+												//Not being able to subbus is why i moved it to a different chip
 }

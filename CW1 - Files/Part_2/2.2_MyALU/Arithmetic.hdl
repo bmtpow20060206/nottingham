@@ -1,0 +1,36 @@
+CHIP Arithmetic{
+	IN x[16], y[16],c0,c1,c2,c3,c4;
+	OUT out[16], zr, ng;
+
+PARTS:
+	//X, Y, not X and not Y 									4/16
+	Not16(in = x, out = notX);
+	Not16(in = y, out = notY);
+
+	//0, 1, -1												7/16
+	And16(a = x, b = notX, out = zero16);
+	Not16(in = zero16, out = negOne16); //minus one yay
+	Or16(a = zero16, b[1..15] = false, b[0] = true, out = one16); //I'm so fucking smart
+	
+	//X+1, Y+1										9/16			Defo room for optimization here
+	Add16(a = x, b = one16, out = incX);
+	Add16(a = y, b = one16, out = incY);
+	
+	//X-1, Y-1, X+Y										14/16
+	Add16(a = x, b = y, out = sumXY);
+	Add16(a = x, b = negOne16, out = decX);
+	Add16(a = y, b = negOne16, out = decY);				//Maybe room for optimizations here too?
+	Not16(in = decX, out = negX);
+	Not16(in = decY, out = negY);
+
+	//X-Y, Y-X												16/16
+	Add16(a = x, b = negY, out = subXY);	//subXY = X-Y
+	Add16(a = negX, b = y, out = subYX); 	//subYX = Y-X
+
+	//Choosing part from the control bits;
+	Mux8Way16(a=zero16,b=one16,c=negOne16,d=x,e=y,f=notX,g=notY,h=negX, sel[0] = c0, sel[1] = c1, sel[2] = c2, out = firstHalf);
+	Mux8Way16(a=negY,b=incX,c=incY,d=decX,e=decY,f=sumXY,g=subXY,h=subYX, sel[0] = c0, sel[1] = c1, sel[2] = c2, out = secondHalf);
+	
+	Mux16(a = firstHalf, b = secondHalf, sel = c4, out = temp); //temp is for status bit checking because out cannot be used as input
+	And16(a = temp, b = true, out = out);
+}
