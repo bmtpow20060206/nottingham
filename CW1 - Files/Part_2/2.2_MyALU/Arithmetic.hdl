@@ -10,7 +10,7 @@ PARTS:
 	//0, 1, -1												7/16
 	And16(a = x, b = notX, out = zero16);
 	Not16(in = zero16, out = negOne16); //minus one yay
-	Or16(a = zero16, b[1..15] = false, b[0] = true, out = one16); //I'm so fucking smart
+	Or16(a = zero16, b[1..15] = false, b[0] = true, out = one16); //I'm so smart
 	
 	//X+1, Y+1										9/16			Defo room for optimization here
 	Add16(a = x, b = one16, out = incX);
@@ -33,4 +33,5 @@ PARTS:
 	
 	Mux16(a = firstHalf, b = secondHalf, sel = c4, out = temp); //temp is for status bit checking because out cannot be used as input
 	And16(a = temp, b = true, out = out);
+
 }
