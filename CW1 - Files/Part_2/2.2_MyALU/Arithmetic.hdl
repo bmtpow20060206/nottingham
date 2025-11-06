@@ -31,7 +31,7 @@ PARTS:
 	Mux8Way16(a=zero16,b=one16,c=negOne16,d=x,e=y,f=notX,g=notY,h=negX, sel[0] = c0, sel[1] = c1, sel[2] = c2, out = firstHalf);
 	Mux8Way16(a=negY,b=incX,c=incY,d=decX,e=decY,f=sumXY,g=subXY,h=subYX, sel[0] = c0, sel[1] = c1, sel[2] = c2, out = secondHalf);
 	
-	Mux16(a = firstHalf, b = secondHalf, sel = c4, out = temp); //temp is for status bit checking because out cannot be used as input
+	Mux16(a = firstHalf, b = secondHalf, sel = c3, out = temp); //temp is for status bit checking because out cannot be used as input
 	And16(a = temp, b = true, out = out);
-
 }
+
