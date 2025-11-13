@@ -12,22 +12,22 @@ CHIP CPU {
 
     PARTS:
 	Not(in = instruction[15], out = isAddress); //isAddress is bool for whether A instruction
-	Not(in = isAddress, out = isComp); //isComp is bool for whether C instruction
+	//Not(in = isAddress, out = isComp); instruction[15] is eq to isComp
 
 	//decoding the payload of a computation instruction
-	And(a = instruction[5], b = isComp, out = d1); //instruction [0] is 1 when C instruction
-	And(a = instruction[4], b = isComp, out = d2);
-	And(a = instruction[3], b = isComp, out = writeM); //d3 is eq to writeM output
-	And(a = instruction[2], b = isComp, out = j1);
-	And(a = instruction[1], b = isComp, out = j2);
-	And(a = instruction[0], b = isComp, out = j3);
-	And(a = instruction[6], b = isComp, out = c6);
-	And(a = instruction[7], b = isComp, out = c5);
-	And(a = instruction[8], b = isComp, out = c4);
-	And(a = instruction[9], b = isComp, out = c3);
-	And(a = instruction[10], b = isComp, out = c2);
-	And(a = instruction[11], b = isComp, out = c1);
-	And(a = instruction[12], b = isComp, out = a);
+	And(a = instruction[5], b = instruction[15], out = d1); //instruction [0] is 1 when C instruction
+	And(a = instruction[4], b = instruction[15], out = d2);
+	And(a = instruction[3], b = instruction[15], out = writeM); //d3 is eq to writeM output
+	And(a = instruction[2], b = instruction[15], out = j1);
+	And(a = instruction[1], b = instruction[15], out = j2);
+	And(a = instruction[0], b = instruction[15], out = j3);
+	And(a = instruction[6], b = instruction[15], out = c6);
+	And(a = instruction[7], b = instruction[15], out = c5);
+	And(a = instruction[8], b = instruction[15], out = c4);
+	And(a = instruction[9], b = instruction[15], out = c3);
+	And(a = instruction[10], b = instruction[15], out = c2);
+	And(a = instruction[11], b = instruction[15], out = c1);
+	And(a = instruction[12], b = instruction[15], out = a);
 
 	Mux16(a = instruction, b = ALUOut, sel = d1, out = AIn); //load the output of the ALU into regA if and only if C inst and d1
 
