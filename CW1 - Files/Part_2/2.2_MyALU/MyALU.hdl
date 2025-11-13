@@ -38,6 +38,6 @@ CHIP MyALU {
 	//out = out lol
 	And16(a = temp, b = true, out = out);
 
-	statusBits(temp = temp, ng = ng, zg = zg); //The input name is temp because im lwk too lazy to change it back since i originally wrote it in here
+	statusBits(temp = temp, ng = ng, zg = zr); //The input name is temp because im lwk too lazy to change it back since i originally wrote it in here
 												//Not being able to subbus is why i moved it to a different chip
 }

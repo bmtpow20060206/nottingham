@@ -8,7 +8,8 @@ CHIP statusBits{
 	And(a = temp[15], b = true, out = ng);
 
 	//idk what im doing
-	Or8Way(in[0] = temp[0],in[1] = temp[1],in[2] = temp[2],in[3] = temp[3],in[4] = temp[4],in[5] = temp[5],in[6] = temp[6],in[7] = temp[7], out = zg1); //part of zg not actual zg sorry i couldn't think of other variable name
-	Or8Way(in[0] = temp[8],in[1] = temp[9],in[2] = temp[10],in[3] = temp[11],in[4] = temp[12],in[5] = temp[13],in[6] = temp[14],in[7] = temp[15], out = zg2);
-	Or(a = zg1, b = zg2, out = zg); 
+	Or8Way(in = temp[0..7], out = zg1); //part of zg not actual zg sorry i couldn't think of other variable name
+	Or8Way(in = temp[8..15], out = zg2);
+	Or(a = zg1, b = zg2, out = notZg);
+	Not(in = notZg, out = zg); 
 }
