@@ -10,25 +10,4 @@
 
 // put your code here
 
-	@R3
-	M = 0		// R3 = 0
-	@R2
-	D = M		// D = R2
-	@counter
-	M = D		// store loop counter R2 into variable "counter" 
-(LOOP)
-	@R1
-	D = M		// D = R1
-	@R3
-	M = M + D	// add R1 to M until loop ends
-	@counter
-	M = M - 1	// decrement counter
 
-	D = M		// load updated counter into D
-	@END
-	D;JEQ		// if(counter == 0) go to END
-	@LOOP
-	0;JMP		// go back to LOOP
-(END)
-	@END
-	0;JMP		// infinte loop
