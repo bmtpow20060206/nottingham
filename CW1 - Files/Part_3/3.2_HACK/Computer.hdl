@@ -24,11 +24,11 @@ CHIP Computer {
 
 
     // CPU
-    
+    CPU(inM = nextMem,instruction = inst ,reset = reset, writeM = isWrite ,outM = prevMem , addressM = memAddress ,pc = instructionAddress);
 
     // RAM
-    
+    Memory(in = prevMem, load = isWrite ,address = memAddress ,out = nextMem);
 
     // ROM
-   
+   ROM32K(address = instructionAddress, out = inst);
 }
