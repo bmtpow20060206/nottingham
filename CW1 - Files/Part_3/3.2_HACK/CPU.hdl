@@ -34,17 +34,13 @@ CHIP CPU {
 	//AReg load is true when 2 different things happen, it is true when instruction[0] = 0 or when C inst and d1
 	Or(a = isAddress, b = d1, out = loadA);
 
-	ARegister(in = AIn,  load = loadA, out = AOut);
+	ARegister(in = AIn,  load = loadA, out = AOut, out[0..14] = addressM);
 	
 	Mux16(a = AOut, b = inM, sel = a, out = AM); //This is what goes into the ALU
-	
-	And16(a = true, b = AOut, out[0..14] = addressM); //Moves AOut into address M
 
 	DRegister(in = ALUOut, load = d2, out = DOut);
 
-	ALU(x = DOut, y = AM, zx = c1, nx = c2, zy = c3, ny = c4, f = c5, no = c6, out = ALUOut, zr = zr, ng = ng);
-
-	And16(a = true, b = ALUOut, out = outM);
+	ALU(x = DOut, y = AM, zx = c1, nx = c2, zy = c3, ny = c4, f = c5, no = c6, out = ALUOut,out = outM, zr = zr, ng = ng);
 
 	And(a = j1, b = ng, out = jlt);
 	And(a = j2, b = zr, out = jeq);
@@ -54,5 +50,6 @@ CHIP CPU {
 	Or(a = jlt, b = jeq, out = isJump1);
 	Or(a = jgt, b = isJump1, out = isJump2);
 
-	PC(in  = AOut, load = isJump2, inc = true, reset = reset, out[0..14] = pc);
+	PC(in = AOut, load = isJump2, inc = true, reset = reset, out[0..14] = pc);
+
 }
