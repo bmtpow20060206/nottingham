@@ -18,9 +18,9 @@ CHIP CPU {
 	And(a = instruction[5], b = instruction[15], out = d1); //instruction [0] is 1 when C instruction
 	And(a = instruction[4], b = instruction[15], out = d2);
 	And(a = instruction[3], b = instruction[15], out = writeM); //d3 is eq to writeM output
-	And(a = instruction[2], b = instruction[15], out = j1);
-	And(a = instruction[1], b = instruction[15], out = j2);
-	And(a = instruction[0], b = instruction[15], out = j3);
+	//And(a = instruction[2], b = instruction[15], out = j1);
+	//And(a = instruction[1], b = instruction[15], out = j2);	Commented out because we can save gates in the jump
+	//And(a = instruction[0], b = instruction[15], out = j3);
 	And(a = instruction[6], b = instruction[15], out = c6);
 	And(a = instruction[7], b = instruction[15], out = c5);
 	And(a = instruction[8], b = instruction[15], out = c4);
@@ -42,14 +42,14 @@ CHIP CPU {
 
 	ALU(x = DOut, y = AM, zx = c1, nx = c2, zy = c3, ny = c4, f = c5, no = c6, out = ALUOut,out = outM, zr = zr, ng = ng);
 
-	And(a = j1, b = ng, out = jlt);
-	And(a = j2, b = zr, out = jeq);
+	And(a = instruction[2], b = ng, out = jlt);
+	And(a = instruction[1], b = zr, out = jeq);
 	Or(a = ng, b = zr, out = ngozr);
 	Not(in = ngozr,out = NgNorZr);
-	And(a = j3, b = NgNorZr, out = jgt);
+	And(a = instruction[0], b = NgNorZr, out = jgt);
 	Or(a = jlt, b = jeq, out = isJump1);
 	Or(a = jgt, b = isJump1, out = isJump2);
+	And(a = isJump2, b = instruction[15], out = isJump3);
 
-	PC(in = AOut, load = isJump2, inc = true, reset = reset, out[0..14] = pc);
-
+	PC(in = AOut, load = isJump3, inc = true, reset = reset, out[0..14] = pc);
 }
